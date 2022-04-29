@@ -5,27 +5,57 @@ const { NotImplementedError } = require('../extensions/index.js');
  * 
  */
 const chainMaker = {
+  strLen: '',
   getLength() {
-    throw new NotImplementedError('Not implemented');
+    // throw new NotImplementedError('Not implemented');
     // remove line with error and write your code here
   },
-  addLink(/* value */) {
-    throw new NotImplementedError('Not implemented');
+  addLink(value) {
+    // console.log(value)
+    if (String(value) !== 'undefined') {
+      this.strLen += this.strLen.length !== 0 ? `~~( ${String(value)} )` : `( ${String(value)} )`
+    } else {
+      this.strLen += ' ( ) '
+    }
+    // console.log(this.strLen)
+    return chainMaker;
+
+    // throw new NotImplementedError('Not implemented');
     // remove line with error and write your code here
   },
-  removeLink(/* position */) {
-    throw new NotImplementedError('Not implemented');
+  removeLink(position) {
+    if (typeof position === 'number' && Number.isInteger(position) && position > 0 && this.strLen.split('~~').length >= position) {
+      let arrRev = this.strLen.split('~~')
+      arrRev.splice(position - 1, 1);
+      this.strLen = arrRev.join('~~');
+      return chainMaker;
+    } else {
+      // let main = this.strLen
+      this.strLen = '';
+      throw new Error("You can't remove incorrect link!");
+    }
+
+    // throw new NotImplementedError('Not implemented');
     // remove line with error and write your code here
   },
   reverseChain() {
-    throw new NotImplementedError('Not implemented');
+    let arrRev = this.strLen.split('~~')
+    this.strLen = arrRev.reverse().join('~~')
+    // console.log(this.strLen)
+    return chainMaker;
+
+    // throw new NotImplementedError('Not implemented');
     // remove line with error and write your code here
   },
   finishChain() {
-    throw new NotImplementedError('Not implemented');
+    let main = this.strLen
+    this.strLen = '';
+    return main
+    // throw new NotImplementedError('Not implemented');
     // remove line with error and write your code here
   }
 };
+
 
 module.exports = {
   chainMaker
