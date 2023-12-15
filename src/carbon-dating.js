@@ -22,23 +22,6 @@ function dateSample(sampleActivity) {
   const namberDel = Number(sampleActivity);
   if (namberDel <= 0 || namberDel > 15) return false;
   return Math.ceil(Math.log(MODERN_ACTIVITY / namberDel) / (.693 / HALF_LIFE_PERIOD));
-  // if (typeof sampleActivity !== 'string') { return false }
-  // if (isNaN(sampleActivity)) {
-  //   return false
-  // } else {
-  //   namberDel = Number(sampleActivity);
-  //   if (namberDel <= 0 || namberDel > 15) {
-  //     return false
-  //   }
-  // }
-
-
-  // let mainNumber = Math.ceil(Math.log(MODERN_ACTIVITY / namberDel) / (.693 / HALF_LIFE_PERIOD));
-  // return mainNumber;
-
-
-  // throw new NotImplementedError('Not implemented');
-  // remove line with error and write your code here
 }
 
 module.exports = {
