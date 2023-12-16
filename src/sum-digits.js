@@ -14,17 +14,12 @@ const { NotImplementedError } = require('../extensions/index.js');
  */
 
 function getSumOfDigits(n) {
-  let r = n;
-
-  while (String(r).length !== 1) {
-    let r2 = 0;
-    let strNum = String(r).split('');
-    strNum.forEach((el) => {
-      r2 += Number(el)
-    })
-    r = r2;
+  const num = String(n).split('').map(Number).reduce((cur, el) => cur + el);
+  if(String(num).length > 1) {
+    return getSumOfDigits(num);
+  } else {
+    return num;
   }
-  return r;
 }
 
 module.exports = {
