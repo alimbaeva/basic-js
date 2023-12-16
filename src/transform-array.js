@@ -14,38 +14,36 @@ const { NotImplementedError } = require('../extensions/index.js');
  * 
  */
 function transform(arr) {
-  // if (Array.isArray(arr) === false) {
-  //   throw new Error("\'arr\' parameter must be an instance of the Array!");
-  // }
-  const nextDel = '--discard-next';
-  const prevDel = '--discard-prev';
-  const nextDub = '--double-next';
-  const prevDub = '--double-prev';
-  let arr2 = arr;
-  let newArr = [];
+  if (!Array.isArray(arr))  throw new Error("\'arr\' parameter must be an instance of the Array!");
+ 
+  const transformedArr = [];
 
-  if (Array.isArray(arr)) {
-    arr2.map((el, ind) => {
-      if (el === nextDel) {
-        arr2.splice(ind + 1, 1);
+  for (let i = 0; i < arr.length; i++) {
+    switch (arr[i]) {
+      case "--discard-next":
+        arr.splice(i+1, 1, undefined);
+        i++;
+        break;
 
-      } else if (el === prevDel) {
-        typeof arr2[ind - 1] !== 'string' ? newArr.pop() : null;
-      } else if (el === nextDub) {
-        ind + 1 < arr2.length ? newArr.push(arr2[ind + 1]) : null;
-      } else if (el === prevDub) {
-        typeof arr2[ind - 1] !== 'string' && arr2[ind - 1] !== undefined ? newArr.push(arr2[ind - 1]) : null;
-      } else {
-        newArr.push(el)
-      }
-    })
-    return newArr;
-  } else {
-    throw new Error("\'arr\' parameter must be an instance of the Array!");
+      case "--discard-prev":
+        if (transformedArr.length > 0) arr[i - 1] === undefined ? '' : transformedArr.pop();
+        break;
+
+      case "--double-next":
+        if (i < arr.length - 1) transformedArr.push(arr[i + 1]);
+        break;
+
+      case "--double-prev":
+        if (i > 0) arr[i - 1] === undefined ? '' : transformedArr.push(arr[i - 1]);
+        break;
+
+      default:
+        transformedArr.push(arr[i]);
+        break;
+    }
   }
 
-  // throw new NotImplementedError('Not implemented');
-  // remove line with error and write your code here
+  return transformedArr;
 }
 
 
