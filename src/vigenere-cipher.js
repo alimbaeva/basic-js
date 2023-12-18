@@ -24,46 +24,76 @@ class VigenereCipheringMachine {
     this.invert = invert;
     this.alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
     this.alphabetLength = this.alphabet.length;
+    this.spaceIndexes = [];
   }
   encrypt(str, key) {
     if (!str || !key) throw Error("Incorrect arguments!");
-
+ 
+    const word = this.dellSpace(str);
+ 
     let encryptedText ='';
-
-    for(let i = 0; i < str.length; i++) {
-      const strChar = str.toUpperCase().charCodeAt(i) - 65;
+ 
+    for(let i = 0; i < word.length; i++) {
+      const strChar = word.toUpperCase().charCodeAt(i) - 65;
       const keyChar = key.toUpperCase().charCodeAt(i % key.length) - 65;
       
       if (strChar >= 0 && strChar <= 25) {
         const indEncode = (strChar + keyChar + this.alphabetLength) % this.alphabetLength
         encryptedText += this.alphabet[indEncode];
       } else {
-        encryptedText += str[i];
+        encryptedText += word[i];
       }
     }
-
-    return this.invert ? encryptedText : encryptedText.split('').reverse().join('');
+ 
+    const result = this.setSpace(encryptedText);
+    return result;
   }
   decrypt(str, key) {
     if (!str || !key) throw Error("Incorrect arguments!");
+ 
+    const word = this.dellSpace(str);
     
     let decryptedText = '';
-
-    for (let i = 0; i < str.length; i++) {
-      const strChar = str.toUpperCase().charCodeAt(i) - 65;
+ 
+    for (let i = 0; i < word.length; i++) {
+      const strChar = word.toUpperCase().charCodeAt(i) - 65;
       const keyChar = key.toUpperCase().charCodeAt(i % key.length) - 65;
-
+ 
       if (strChar >= 0 && strChar <= 25) {
         const indDecode = (strChar - keyChar + this.alphabetLength) % this.alphabetLength;
         decryptedText += this.alphabet[indDecode];
       } else {
-        decryptedText += str[i];
+        decryptedText += word[i];
       }
     }
-
-    return this.invert ? decryptedText : decryptedText.split('').reverse().join('');
+ 
+    const result = this.setSpace(decryptedText);
+    return result;
   }
-}
+ 
+  dellSpace(str) {
+     let currentIndex = str.indexOf(' ');
+ 
+     while (currentIndex !== -1) {
+       this.spaceIndexes.push(currentIndex);
+       currentIndex = str.indexOf(' ', currentIndex + 1);
+     }
+   
+     return str.replace(/\s/g, '');
+  }
+ 
+  setSpace(str) {
+     let strArr = str.split('');
+ 
+     this.spaceIndexes.forEach(index => {
+         strArr.splice(index, 0, ' ');
+     });
+   
+     this.spaceIndexes = [];
+     return this.invert ? strArr.join('') : strArr.reverse().join('');
+  }
+ 
+ }
 
 module.exports = {
   VigenereCipheringMachine
