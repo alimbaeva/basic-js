@@ -22,7 +22,7 @@ const { NotImplementedError } = require('../extensions/index.js');
 class VigenereCipheringMachine {
   constructor(invert = true) {
     this.invert = invert;
-    this.alphabet = [A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z];
+    this.alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
     this.alphabetLength = this.alphabet.length;
   }
   encrypt(str, key) {
@@ -34,7 +34,7 @@ class VigenereCipheringMachine {
       const strChar = str.toUpperCase().charCodeAt(i) - 65;
       const keyChar = key.toUpperCase().charCodeAt(i % key.length) - 65;
       
-      if (plainChar >= 0 && plainChar <= 25) {
+      if (strChar >= 0 && strChar <= 25) {
         const indEncode = (strChar + keyChar + this.alphabetLength) % this.alphabetLength
         encryptedText += this.alphabet[indEncode];
       } else {
